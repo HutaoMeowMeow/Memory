@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StoryPad - Read Stories</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Improved Foggy Background Effect */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(45, 45, 45, 0.2) 0%, rgba(10, 10, 10, 0.8) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Main Content */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff6b6b;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b6b;
+        }
+
+        .write-btn {
+            background: #ff6b6b;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .write-btn:hover {
+            background: #e55555;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ffcc00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border-radius: 30px;
+            border: 2px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-bar input:focus {
+            border-color: #ff6b6b;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .search-button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ff6b6b;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-button:hover {
+            background: #e55555;
+        }
+
+        /* Story Grid */
+        .section-title {
+            font-size: 32px;
+            margin: 50px 0 30px;
+            text-align: center;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .story-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255,107,107,0.3);
+        }
+
+        .story-cover {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .story-info {
+            padding: 15px;
+        }
+
+        .story-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .story-author {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        /* Genre Pills */
+        .genre-pills {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .genre-pill {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .genre-pill:hover,
+        .genre-pill.active {
+            background: rgba(255,107,107,0.2);
+            border-color: #ff6b6b;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #ff6b6b;
+        }
+
+        .modal-banner {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-info h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .modal-info .author {
+            color: #aaa;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .modal-description {
+            margin: 20px 0;
+            line-height: 1.8;
+            color: #ddd;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            border-radius: 25px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-btn.primary {
+            background: #ff6b6b;
+            color: #fff;
+        }
+
+        .modal-btn.primary:hover {
+            background: #e55555;
+        }
+
+        .modal-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .modal-btn.secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Loading spinner */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            display: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Reading Area */
+        .reading-area {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #121212;
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .reading-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 30px;
+            position: relative;
+        }
+
+        .reading-header {
+            padding: 15px 20px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2001;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reading-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .reading-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .reading-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .reading-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .reading-btn.close {
+            background: #ff6b6b;
+        }
+
+        .reading-btn.close:hover {
+            background: #e55555;
+        }
+
+        .reading-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #ddd;
+        }
+
+        .reading-content p {
+            margin-bottom: 20px;
+        }
+
+        .reading-footer {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .chapter-nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .chapter-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chapter-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .chapter-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0,0,0,0.9);
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #ff6b6b;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .story-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .story-cover {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">StoryPad</a>
+            <div class="nav-links">
+                <a href="#">Browse</a>
+                <a href="#">Community</a>
+                <a href="#">My Library</a>
+                <a href="#" class="write-btn">Write</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Discover Stories That Move You</h1>
+            <p>Read millions of stories from talented writers around the world</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for stories, authors, or genres...">
+                <button class="search-button">Search</button>
+            </div>
+        </section>
+
+        <div class="genre-pills">
+            <a href="#" class="genre-pill active">All</a>
+            <a href="#" class="genre-pill">Romance</a>
+            <a href="#" class="genre-pill">Fantasy</a>
+            <a href="#" class="genre-pill">Mystery</a>
+            <a href="#" class="genre-pill">Sci-Fi</a>
+            <a href="#" class="genre-pill">Horror</a>
+            <a href="#" class="genre-pill">Adventure</a>
+            <a href="#" class="genre-pill">Teen Fiction</a>
+        </div>
+
+        <h2 class="section-title">Trending Now</h2>
+        <div class="story-grid">
+            <!-- Story 1 -->
+            <div class="story-card" onclick="openStoryModal(1)">
+                <img src="memory.jpeg" alt="Once Stranger, Now a Memory" class="story-cover">
+                <div class="story-info">
+                    <h3 class="story-title">Once Strangers, Now a Memory</h3>
+                    <p class="story-author">by Gian Carlo Lozanes</p>
+                </div>
+            </div>
+            
+        <div class="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 20px;">Loading...</p>
+        </div>
+    </main>
+
+    <!-- Story Modal -->
+    <div class="modal" id="story-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <img src="memory.jpeg" alt="Story Banner" class="modal-banner">
+            <div class="modal-info">
+                <h2 id="modal-title">Once Strangers, Now a Memory</h2>
+                <p class="author" id="modal-author">by Gian Carlo Lozanes</p>
+            </div>
+            <div class="modal-description" id="modal-description">
+                It tells the story of two individuals who began as complete strangers, unaware of the impact they would have on each other's lives. Through shared moments, laughter, and silent understanding, they built a bond that felt timeless—only to be separated by the inevitability of life’s changes. Now, all that remains are fragments of memories: a smile, a conversation, a feeling that lingers in the heart. This is a story about the kind of connection that doesn't last forever, but stays with you forever.
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn primary" onclick="readStory()">Read Now</button>
+                <button class="modal-btn secondary" onclick="addToLibrary()">Add to Library</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reading Area -->
+    <div class="reading-area" id="reading-area">
+        <div class="reading-header">
+            <h2 class="reading-title">Once Strangers, Now a Memory</h2>
+            <div class="reading-controls">
+                <button class="reading-btn close" onclick="closeReading()">Close</button>
+            </div>
+        </div>
+        <div class="reading-container">
+            <div class="reading-content">
+                <h2 style="margin-bottom: 30px; color: #ff6b6b;">Chapter 1: First Encounter</h2>
+                <p>It all began with the graduation ball—an event that everyone been waiting for but never truly anticipated the magic it would bring. Our first meeting was during the practices leading up to that night. We were paired up as dance partners, but at the time, we were both a little shy, unsure of how the other would be. I noticed you right away, but we hardly spoke—just a few awkward exchanges as we tried to catch up on the moves we were supposed to learn. You had missed a few practices, so I ended up showing you the steps. Even though I didn’t know much myself, I tried to help, unsure if you would think I was a terrible dancer.</p>
+
+                <p style="text-align: justify;">Fast forward to May 17, 2024—the day of the ball. Time seemed to fly, and with each passing minute, I couldn’t help but wonder if you’d show up. The clock ticked away, and I was getting a little nervous. After all, the event was about to begin, and there was no sign of you. It was already getting late, and I thought maybe you’d decided to skip it after all. But then, just when I had almost convinced myself that you weren’t coming, I saw you.</p>
+
+                <p style="text-align: justify;">You entered the hall, and for a moment, everything seemed to slow down. You looked absolutely stunning. The dress, the way you carried yourself—it was more than I had ever imagined. It was as though time had aligned perfectly. Our dance with the rest of the crowd was about to start, and there you were, right in front of me. I almost couldn’t believe it.</p>
+
+                <p style="text-align: justify;">I felt my heart race as the music began to play, and I stood there, unsure of what to do. I thought maybe I’d missed my chance—maybe you’d already been swept up by someone else. But as the dance continued, I saw an opening, a tiny window of opportunity. The crowd was moving, and I realized that if I didn’t act now, I might regret it.</p>
+
+                <p style="text-align: justify;">With a bit of hesitation, I stood up, my feet a little unsure of where they were going. I made my way toward you, the words forming slowly in my head. I wasn’t sure what I was going to say, but somehow, I found myself in front of you, asking if I could have this dance. The words came out clumsy, but you smiled, and in that moment, everything felt right. You said yes.</p>
+
+                <p style="text-align: justify;">We took our places in front of the crowd, and the music started again. It was strange, dancing in front of so many people, but as we moved, I couldn’t help but feel like it was just the two of us. The nerves were there, but they faded away with each step. We were shy, unsure of how we looked or if we were doing it right, but there was something comforting in the awkwardness. It felt natural, in a way.</p>
+
+                <p style="text-align: justify;">Despite the eyes of everyone around us, we had fun. There was a certain freedom in that moment—something pure about the way we moved together, a connection we hadn’t expected. That dance, that brief moment, felt like it could last forever. I had already made my decision and though it had been a short, I knew then that it was a memory I’d keep forever.</p>
+ 
+                <h2 style="margin-bottom: 30px; color: #ff6b6b;">Chapter 2: Graduation</h2>
+                <p>After the magical night of the graduation ball, the quiet of home settled around me. But something in me stirred. Maybe it was the memory of that dance—but I couldn’t help myself. I picked up my phone and hesitated. Should I message her? Should I just leave it as it is?</p>
+
+                <p>But something pushed me forward. After all, what was there to lose?</p>
+
+                <p>So I sent the first message. Something simple—"Did you have fun at the ball?" Just a casual conversation starter. To my surprise, she replied. And just like that, we started talking. For a while, it felt light and effortless, like we were both still lingering in the magic of the night before.</p>
+
+                <p>The next day came, and it was time to prepare for something bigger—our graduation. A once-in-a-lifetime moment that would mark the end of an unforgettable chapter in our lives. The friendships we built, the challenges we faced, the laughter and the stress of Grade 11 and 12—it had all led to this.</p>
+
+                <p>We gathered at the Kinetics building for practice. I kept looking around, wondering if she’d be there. And when I finally saw her, I smiled to myself. She came. Again. Day by day we practiced—walking up the stage, learning the flow, and even dancing to the song Long Live—a song that, in that moment, meant everything. It wasn’t just a performance. It was a farewell, a celebration, a tribute to our time together.</p>
+
+                <p>But she wasn’t always there. Some days, she had to leave early or skip practice altogether. She was dealing with something, some condition that required her to rest. I understood—it made me worry, but I never held it against her. Still, I hoped. Hoped she’d be there for the real thing.</p>
+
+                <p>The night before graduation, she messaged me, unsure if she could attend. A problem had come up. I knew I had to say something. So I told her what I truly believed: this was a once-in-a-lifetime moment, one that couldn’t be missed. I told her, “You have to come. Your friend will be there, and so will I, ready to congratulate you.”</p>
+
+                <p>And then the big day came.</p>
+
+                <p>We all arrived at the venue, buzzing with excitement and nerves. Outside the building, students lined up by batch, the air felt heavy with anticipation and nostalgia. The first to walk were the achievers—those with honors, high honors, and highest honors. I was one of them. I stepped forward, but even as I smiled for the cameras, my mind kept wandering.</p>
+
+                <p>Would she come?</p>
+
+                <p>Then the next batch was called—by strand. I stood waiting, eyes scanning the crowd.</p>
+
+                <p>And then I saw her.</p>
+
+                <p>There she was, walking toward the stage, radiant and composed. She looked beautiful—shy, yes, but there. She had made it. And in that moment, I was genuinely happy. Not for myself, but for her.</p>
+
+                <p>As her name was called, she walked up the stage quickly, head down, too shy to pause for a photo. But to me, that moment was still picture-perfect. Even if no camera caught it, I’d remember it.</p>
+
+                <p>Then came the end—the final performance. Everyone stood to sing Long Live together. Voices shook, hearts swelled. Some cried. Some laughed. All of us felt it—the closing of a chapter that had defined us.</p>
+
+                <p>After the ceremony, the picture-taking began. Everyone was capturing moments, locking away memories before they slipped through our fingers. I was waiting for our strand to be called for the pictorial when she came looking for me. She wanted to congratulate me. I had been looking for her too.</p>
+
+                <p>We smiled. We spoke. And then we parted again.</p>
+
+                <p>But something in me said it wasn’t enough.</p>
+
+                <p>So I messaged her. I wanted one last picture. One final memory before we went our separate ways. I found her, standing with her family. I asked if we could take a photo together.</p>
+
+                <p>She hesitated. Her family was there. They might misunderstand.</p>
+
+                <p>I understood. I didn’t push. But it still hurt, just a little.</p>
+
+                <p>As my parents and I walked toward the stairs to leave, I saw her ahead of us. Her family by her side, mine by mine. We didn’t speak, but I looked at her one last time as we stepped down those stairs, past the exit, and into whatever came next.</p>
+
+                <p>That moment stayed with me.</p>
+
+                <p>Because I didn’t know if I’d ever see her again.</p>
+
+                <p>And maybe I wouldn’t. Life would get busy. College was calling. But we still had contact—we still messaged each other. It just wasn’t the same. We wouldn’t see each other as often, if at all. But even if we didn’t, I was at peace.</p>
+
+                <p>Because we made it.</p>
+
+                <p>We graduated.</p>
+
+                <p>And we left behind a memory that would live forever.</p>
+
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Help</a>
+            <a href="#">Contact</a>
+        </div>
+        <p style="color: #666;">© 2025 StoryPad. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Modal functions
+        function openStoryModal(storyId) {
+            document.getElementById('story-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('story-modal').style.display = 'none';
+        }
+
+        function readStory() {
+            closeModal();
+            document.getElementById('reading-area').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReading() {
+            document.getElementById('reading-area').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function addToLibrary() {
+            alert('Story added to your library!');
+            closeModal();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('story-modal')) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
