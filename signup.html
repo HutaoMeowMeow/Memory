@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - TaleNest</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #141212, #141212);
+      overflow: hidden;
+      height: 100vh;
+      position: relative;
+      color: #ffffff;
+    }
+
+    .logo {
+      font-size: 42px;
+      font-weight: bold;
+      color: #ff6b6b;
+      margin-bottom: 20px;
+      text-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
+      text-align: center;
+    }
+
+    .waves {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 20vh;
+      background: url('wave.svg') repeat-x;
+      background-size: contain;
+      animation: wave 10s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes wave {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 1000px; }
+    }
+
+    .container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      position: relative;
+    }
+
+    .modal {
+      background: #000000;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      width: 100%;
+      max-width: 400px;
+      z-index: 2;
+    }
+
+    .modal h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ff6b6b;
+    }
+
+    .modal form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .modal input {
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .modal button {
+      padding: 12px;
+      background-color: #ff6b6b;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .modal button:hover {
+      background-color: #e55555;
+    }
+
+    #message {
+      text-align: center;
+      color: red;
+      margin-top: 10px;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 10px;
+      color: #ffffff;
+    }
+
+    .login-link a {
+      color: #ff6b6b;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">TaleNest</div>
+    <div class="modal">
+      <h2>Create an Account</h2>
+      <form id="signup-form">
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+
+        <label for="username">Username</label>
+        <input type="text" id="username" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" required>
+
+        <button type="submit">Sign Up</button>
+      </form>
+      <p id="message"></p>
+      <div class="login-link">
+        Already have an account? <a href="login.html">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="waves"></div>
+
+  <script>
+    function hashPassword(password) {
+      let hash = 0;
+      for (let i = 0; i < password.length; i++) {
+        const char = password.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash |= 0;
+      }
+      return hash.toString();
+    }
+
+    function getUserAccounts() {
+      const accounts = localStorage.getItem('taleNestAccounts');
+      return accounts ? JSON.parse(accounts) : [];
+    }
+
+    function saveUserAccounts(accounts) {
+      localStorage.setItem('taleNestAccounts', JSON.stringify(accounts));
+    }
+
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      const message = document.getElementById('message');
+      const accounts = getUserAccounts();
+
+      if (accounts.find(acc => acc.email.toLowerCase() === email.toLowerCase())) {
+        message.textContent = 'Email already registered.';
+        return;
+      }
+
+      const newAccount = {
+        email,
+        username,
+        password: hashPassword(password)
+      };
+
+      accounts.push(newAccount);
+      saveUserAccounts(accounts);
+
+      // Redirect to login after successful sign up
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaleNest - Login</title>
+    <link rel="icon" type="image/png" href="Logo.jpeg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Foggy Background Effect */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(45, 45, 45, 0.2) 0%, rgba(10, 10, 10, 0.8) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 42px;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .login-box {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #ff6b6b, #ffcc00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ddd;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #ff6b6b;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+        }
+
+        .btn:hover {
+            background: #e55555;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .links {
+            margin-top: 25px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .links a {
+            color: #ff6b6b;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .links a:hover {
+            color: #ffcc00;
+            text-decoration: underline;
+        }
+
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 30px 0;
+            color: #666;
+        }
+
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .separator::before {
+            margin-right: 10px;
+        }
+
+        .separator::after {
+            margin-left: 10px;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .social-icon {
+            width: 24px;
+            height: 24px;
+            filter: invert(1);
+            opacity: 0.8;
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s;
+        }
+
+        .loading.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .spinner {
+            width: 70px;
+            height: 70px;
+            border: 4px solid rgba(255, 107, 107, 0.1);
+            border-top-color: #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading p {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ddd;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .success-message {
+            color: #4caf50;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .remember-me label {
+            font-size: 14px;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Logging in...</p>
+    </div>
+    
+    <div class="container">
+        <div class="logo">TaleNest</div>
+        <div class="login-box">
+            <h2>Welcome Back</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                </div>
+                <div class="remember-me">
+                    <input type="checkbox" id="remember-me">
+                    <label for="remember-me">Remember me</label>
+                </div>
+                <div id="error-message" class="error-message">
+                    Invalid email or password. Please try again.
+                </div>
+                <div id="success-message" class="success-message">
+                    Login successful! Redirecting...
+                </div>
+                <button type="submit" class="btn">Log In</button>
+            </form>
+            
+            <div class="separator">or</div>
+            
+            <div class="social-login">
+                <div class="social-btn" title="Login with Google">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v6/icons/google.svg" alt="Google" class="social-icon">
+                </div>
+                <div class="social-btn" title="Login with Facebook">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v6/icons/facebook.svg" alt="Facebook" class="social-icon">
+                </div>
+                <div class="social-btn" title="Login with Apple">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v6/icons/apple.svg" alt="Apple" class="social-icon">
+                </div>
+            </div>
+            
+            <div class="links" style="margin-top: 30px;">
+                Don't have an account? <a href="signup.html">Sign up</a>
+            </div>
+            <div class="links" style="margin-top: 10px;">
+                <a href="#" id="forgot-password">Forgot password?</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize localStorage if it doesn't exist
+        if (!localStorage.getItem('taleNestAccounts')) {
+            localStorage.setItem('taleNestAccounts', JSON.stringify([]));
+        }
+
+        // Function to get user accounts from localStorage
+        function getUserAccounts() {
+            const accounts = localStorage.getItem('taleNestAccounts');
+            return accounts ? JSON.parse(accounts) : [];
+        }
+
+        // Function to save user accounts to localStorage
+        function saveUserAccounts(accounts) {
+            localStorage.setItem('taleNestAccounts', JSON.stringify(accounts));
+        }
+
+        // Function to hash password (simple hash for demo - in production use proper encryption)
+        function hashPassword(password) {
+            let hash = 0;
+            for (let i = 0; i < password.length; i++) {
+                const char = password.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return hash.toString();
+        }
+
+        // Function to check if login credentials are valid
+        function checkCredentials(email, password) {
+            const accounts = getUserAccounts();
+            const hashedPassword = hashPassword(password);
+            const user = accounts.find(account => 
+                account.email.toLowerCase() === email.toLowerCase() && 
+                account.password === hashedPassword
+            );
+            
+            return user ? user : null;
+        }
+
+        // Function to save session
+        function saveSession(user, rememberMe) {
+            const sessionData = {
+                email: user.email,
+                username: user.username,
+                loginTime: new Date().toISOString()
+            };
+            
+            if (rememberMe) {
+                localStorage.setItem('currentUser', JSON.stringify(sessionData));
+            } else {
+                sessionStorage.setItem('currentUser', JSON.stringify(sessionData));
+            }
+        }
+
+        // Check if user is already logged in
+        function checkExistingSession() {
+            const localSession = localStorage.getItem('currentUser');
+            const sessionSession = sessionStorage.getItem('currentUser');
+            
+            if (localSession || sessionSession) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Check for existing session on page load
+        checkExistingSession();
+
+        // Pre-fill email if remembered
+        window.addEventListener('DOMContentLoaded', function() {
+            const rememberedEmail = localStorage.getItem('rememberedEmail');
+            if (rememberedEmail) {
+                document.getElementById('email').value = rememberedEmail;
+                document.getElementById('remember-me').checked = true;
+            }
+        });
+
+        // Form submission handler
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('remember-me').checked;
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+            
+            // Hide previous messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            const user = checkCredentials(email, password);
+            
+            if (user) {
+                // Save remembered email if checked
+                if (rememberMe) {
+                    localStorage.setItem('rememberedEmail', email);
+                } else {
+                    localStorage.removeItem('rememberedEmail');
+                }
+                
+                // Save session
+                saveSession(user, rememberMe);
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                
+                // Show loading animation
+                setTimeout(() => {
+                    document.getElementById('loading').classList.add('show');
+                }, 500);
+                
+                // Redirect to main page
+                setTimeout(function() {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } else {
+                // Show error message
+                errorMessage.style.display = 'block';
+                
+                // Shake the login box for visual feedback
+                const loginBox = document.querySelector('.login-box');
+                loginBox.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    loginBox.style.animation = '';
+                }, 500);
+            }
+        });
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Social login handlers
+        document.querySelectorAll('.social-btn').forEach(function(btn, index) {
+            btn.addEventListener('click', function() {
+                const providers = ['Google', 'Facebook', 'Apple'];
+                const provider = providers[index];
+                
+                // Show loading
+                document.getElementById('loading').classList.add('show');
+                
+                // Simulate social login
+                setTimeout(() => {
+                    alert(`${provider} login is not implemented in this demo. Please use email login.`);
+                    document.getElementById('loading').classList.remove('show');
+                }, 1000);
+            });
+        });
+
+        // Forgot password handler
+        document.getElementById('forgot-password').addEventListener('click', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            
+            if (email) {
+                alert(`Password reset link would be sent to: ${email}\n(This is a demo - feature not implemented)`);
+            } else {
+                alert('Please enter your email address first');
+                document.getElementById('email').focus();
+            }
+        });
+
+    </script>
+</body>
+</html>
