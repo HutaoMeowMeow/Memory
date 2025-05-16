@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StoryPad - Read Stories</title>
     <style>
+
+        .story-genre {
+        display: inline-block;
+        background: rgba(255,107,107,0.2);
+        color: #ff6b6b;
+        padding: 5px 15px;
+        border-radius: 15px;
+        font-size: 14px;
+        margin-top: 5px;
+    }
         * {
             margin: 0;
             padding: 0;
@@ -556,7 +566,7 @@
         <h2 class="section-title">Trending Now</h2>
         <div class="story-grid">
             <!-- Story 1 -->
-            <div class="story-card" onclick="openStoryModal(1)">
+            <div class="story-card" onclick="openStoryModal(1)" data-genre="Romance">
                 <img src="memory.jpeg" alt="Once Stranger, Now a Memory" class="story-cover">
                 <div class="story-info">
                     <h3 class="story-title">Once Strangers, Now a Memory</h3>
@@ -576,9 +586,11 @@
             <span class="close-modal" onclick="closeModal()">&times;</span>
             <img src="memory.jpeg" alt="Story Banner" class="modal-banner">
             <div class="modal-info">
-                <h2 id="modal-title">Once Strangers, Now a Memory</h2>
-                <p class="author" id="modal-author">by Gian Carlo Lozanes</p>
-            </div>
+            <h2 id="modal-title">Once Strangers, Now a Memory</h2>
+            <p class="author" id="modal-author">by Gian Carlo Lozanes</p>
+            <span class="story-genre">Romance</span>
+        </div>
+
             <div class="modal-description" id="modal-description">
                 It tells the story of two individuals who began as complete strangers, unaware of the impact they would have on each other's lives. Through shared moments, laughter, and silent understanding, they built a bond that felt timeless—only to be separated by the inevitability of life’s changes. Now, all that remains are fragments of memories: a smile, a conversation, a feeling that lingers in the heart. This is a story about the kind of connection that doesn't last forever, but stays with you forever.
             </div>
@@ -617,59 +629,59 @@
                 <h2 style="margin-bottom: 30px; color: #ff6b6b;">Chapter 2: Graduation</h2>
                 <p>After the magical night of the graduation ball, the quiet of home settled around me. But something in me stirred. Maybe it was the memory of that dance—but I couldn’t help myself. I picked up my phone and hesitated. Should I message her? Should I just leave it as it is?</p>
 
-                <p style="text-align: justify;>But something pushed me forward. After all, what was there to lose?</p>
+                <p>But something pushed me forward. After all, what was there to lose?</p>
 
-                <p style="text-align: justify;>So I sent the first message. Something simple—"Did you have fun at the ball?" Just a casual conversation starter. To my surprise, she replied. And just like that, we started talking. For a while, it felt light and effortless, like we were both still lingering in the magic of the night before.</p>
+                <p>So I sent the first message. Something simple—"Did you have fun at the ball?" Just a casual conversation starter. To my surprise, she replied. And just like that, we started talking. For a while, it felt light and effortless, like we were both still lingering in the magic of the night before.</p>
 
-                <p style="text-align: justify;>The next day came, and it was time to prepare for something bigger—our graduation. A once-in-a-lifetime moment that would mark the end of an unforgettable chapter in our lives. The friendships we built, the challenges we faced, the laughter and the stress of Grade 11 and 12—it had all led to this.</p>
+                <p>The next day came, and it was time to prepare for something bigger—our graduation. A once-in-a-lifetime moment that would mark the end of an unforgettable chapter in our lives. The friendships we built, the challenges we faced, the laughter and the stress of Grade 11 and 12—it had all led to this.</p>
 
-                <p style="text-align: justify;>We gathered at the Kinetics building for practice. I kept looking around, wondering if she’d be there. And when I finally saw her, I smiled to myself. She came. Again. Day by day we practiced—walking up the stage, learning the flow, and even dancing to the song Long Live—a song that, in that moment, meant everything. It wasn’t just a performance. It was a farewell, a celebration, a tribute to our time together.</p>
+                <p>We gathered at the Kinetics building for practice. I kept looking around, wondering if she’d be there. And when I finally saw her, I smiled to myself. She came. Again. Day by day we practiced—walking up the stage, learning the flow, and even dancing to the song Long Live—a song that, in that moment, meant everything. It wasn’t just a performance. It was a farewell, a celebration, a tribute to our time together.</p>
 
-                <p style="text-align: justify;>But she wasn’t always there. Some days, she had to leave early or skip practice altogether. She was dealing with something, some condition that required her to rest. I understood—it made me worry, but I never held it against her. Still, I hoped. Hoped she’d be there for the real thing.</p>
+                <p>But she wasn’t always there. Some days, she had to leave early or skip practice altogether. She was dealing with something, some condition that required her to rest. I understood—it made me worry, but I never held it against her. Still, I hoped. Hoped she’d be there for the real thing.</p>
 
-                <p style="text-align: justify;>The night before graduation, she messaged me, unsure if she could attend. A problem had come up. I knew I had to say something. So I told her what I truly believed: this was a once-in-a-lifetime moment, one that couldn’t be missed. I told her, “You have to come. Your friend will be there, and so will I, ready to congratulate you.”</p>
+                <p>The night before graduation, she messaged me, unsure if she could attend. A problem had come up. I knew I had to say something. So I told her what I truly believed: this was a once-in-a-lifetime moment, one that couldn’t be missed. I told her, “You have to come. Your friend will be there, and so will I, ready to congratulate you.”</p>
 
-                <p style="text-align: justify;>And then the big day came.</p>
+                <p>And then the big day came.</p>
 
-                <p style="text-align: justify;>We all arrived at the venue, buzzing with excitement and nerves. Outside the building, students lined up by batch, the air felt heavy with anticipation and nostalgia. The first to walk were the achievers—those with honors, high honors, and highest honors. I was one of them. I stepped forward, but even as I smiled for the cameras, my mind kept wandering.</p>
+                <p>We all arrived at the venue, buzzing with excitement and nerves. Outside the building, students lined up by batch, the air felt heavy with anticipation and nostalgia. The first to walk were the achievers—those with honors, high honors, and highest honors. I was one of them. I stepped forward, but even as I smiled for the cameras, my mind kept wandering.</p>
 
-                <p style="text-align: justify;>Would she come?</p>
+                <p>Would she come?</p>
 
-                <p style="text-align: justify;>Then the next batch was called—by strand. I stood waiting, eyes scanning the crowd.</p>
+                <p>Then the next batch was called—by strand. I stood waiting, eyes scanning the crowd.</p>
 
-                <p style="text-align: justify;>And then I saw her.</p>
+                <p>And then I saw her.</p>
 
-                <p style="text-align: justify;>There she was, walking toward the stage, radiant and composed. She looked beautiful—shy, yes, but there. She had made it. And in that moment, I was genuinely happy. Not for myself, but for her.</p>
+                <p>There she was, walking toward the stage, radiant and composed. She looked beautiful—shy, yes, but there. She had made it. And in that moment, I was genuinely happy. Not for myself, but for her.</p>
 
-                <p style="text-align: justify;>As her name was called, she walked up the stage quickly, head down, too shy to pause for a photo. But to me, that moment was still picture-perfect. Even if no camera caught it, I’d remember it.</p>
+                <p>As her name was called, she walked up the stage quickly, head down, too shy to pause for a photo. But to me, that moment was still picture-perfect. Even if no camera caught it, I’d remember it.</p>
 
-                <p style="text-align: justify;>Then came the end—the final performance. Everyone stood to sing Long Live together. Voices shook, hearts swelled. Some cried. Some laughed. All of us felt it—the closing of a chapter that had defined us.</p>
+                <p>Then came the end—the final performance. Everyone stood to sing Long Live together. Voices shook, hearts swelled. Some cried. Some laughed. All of us felt it—the closing of a chapter that had defined us.</p>
 
-                <p style="text-align: justify;>After the ceremony, the picture-taking began. Everyone was capturing moments, locking away memories before they slipped through our fingers. I was waiting for our strand to be called for the pictorial when she came looking for me. She wanted to congratulate me. I had been looking for her too.</p>
+                <p>After the ceremony, the picture-taking began. Everyone was capturing moments, locking away memories before they slipped through our fingers. I was waiting for our strand to be called for the pictorial when she came looking for me. She wanted to congratulate me. I had been looking for her too.</p>
 
-                <p style="text-align: justify;>We smiled. We spoke. And then we parted again.</p>
+                <p>We smiled. We spoke. And then we parted again.</p>
 
-                <p style="text-align: justify;>But something in me said it wasn’t enough.</p>
+                <p>But something in me said it wasn’t enough.</p>
 
-                <p style="text-align: justify;>So I messaged her. I wanted one last picture. One final memory before we went our separate ways. I found her, standing with her family. I asked if we could take a photo together.</p>
+                <p>So I messaged her. I wanted one last picture. One final memory before we went our separate ways. I found her, standing with her family. I asked if we could take a photo together.</p>
 
-                <p style="text-align: justify;>She hesitated. Her family was there. They might misunderstand.</p>
+                <p>She hesitated. Her family was there. They might misunderstand.</p>
 
                 <p>I understood. I didn’t push. But it still hurt, just a little.</p>
 
-                <p style="text-align: justify;>As my parents and I walked toward the stairs to leave, I saw her ahead of us. Her family by her side, mine by mine. We didn’t speak, but I looked at her one last time as we stepped down those stairs, past the exit, and into whatever came next.</p>
+                <p>As my parents and I walked toward the stairs to leave, I saw her ahead of us. Her family by her side, mine by mine. We didn’t speak, but I looked at her one last time as we stepped down those stairs, past the exit, and into whatever came next.</p>
 
-                <p style="text-align: justify;>That moment stayed with me.</p>
+                <p>That moment stayed with me.</p>
 
-                <p style="text-align: justify;>Because I didn’t know if I’d ever see her again.</p>
+                <p>Because I didn’t know if I’d ever see her again.</p>
 
-                <p style="text-align: justify;>And maybe I wouldn’t. Life would get busy. College was calling. But we still had contact—we still messaged each other. It just wasn’t the same. We wouldn’t see each other as often, if at all. But even if we didn’t, I was at peace.</p>
+                <p>And maybe I wouldn’t. Life would get busy. College was calling. But we still had contact—we still messaged each other. It just wasn’t the same. We wouldn’t see each other as often, if at all. But even if we didn’t, I was at peace.</p>
 
-                <p style="text-align: justify;>Because we made it.</p>
+                <p>Because we made it.</p>
 
-                <p style="text-align: justify;>We graduated.</p>
+                <p>We graduated.</p>
 
-                <p style="text-align: justify;>And we left behind a memory that would live forever.</p>
+                <p>And we left behind a memory that would live forever.</p>
 
             
         </div>
@@ -686,38 +698,88 @@
         <p style="color: #666;">© 2025 StoryPad. All rights reserved.</p>
     </footer>
 
+    
     <script>
-        // Modal functions
-        function openStoryModal(storyId) {
-            document.getElementById('story-modal').style.display = 'block';
-        }
+    // Modal functions
+    function openStoryModal(storyId) {
+        document.getElementById('story-modal').style.display = 'block';
+    }
 
-        function closeModal() {
-            document.getElementById('story-modal').style.display = 'none';
-        }
+    function closeModal() {
+        document.getElementById('story-modal').style.display = 'none';
+    }
 
-        function readStory() {
+    function readStory() {
+        closeModal();
+        document.getElementById('reading-area').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeReading() {
+        document.getElementById('reading-area').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    function addToLibrary() {
+        alert('Story added to your library!');
+        closeModal();
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('story-modal')) {
             closeModal();
-            document.getElementById('reading-area').style.display = 'block';
-            document.body.style.overflow = 'hidden';
         }
+    }
 
-        function closeReading() {
-            document.getElementById('reading-area').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function addToLibrary() {
-            alert('Story added to your library!');
-            closeModal();
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('story-modal')) {
-                closeModal();
+    function selectGenre(genre) {
+        // Remove 'active' class from all genre pills
+        const genrePills = document.querySelectorAll('.genre-pill');
+        genrePills.forEach(pill => {
+            pill.classList.remove('active');
+        });
+        
+        // Add 'active' class to the clicked genre pill
+        event.target.classList.add('active');
+        
+        // Show loading spinner
+        document.querySelector('.loading').style.display = 'block';
+        
+        // Filter stories based on genre
+        setTimeout(() => {
+            document.querySelector('.loading').style.display = 'none';
+            
+            const storyCards = document.querySelectorAll('.story-card');
+            
+            if (genre === 'All') {
+                // Show all stories
+                storyCards.forEach(card => {
+                    card.style.display = 'block';
+                });
+            } else {
+                // Filter stories by genre
+                storyCards.forEach(card => {
+                    if (card.getAttribute('data-genre') === genre) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
             }
-        }
-    </script>
+        }, 800); // Simulate loading time
+    }
+
+    // Add click event listeners to all genre pills
+    document.addEventListener('DOMContentLoaded', function() {
+        const genrePills = document.querySelectorAll('.genre-pill');
+        genrePills.forEach(pill => {
+            pill.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default link behavior
+                const genre = this.textContent;
+                selectGenre(genre);
+            });
+        });
+    });
+</script>
 </body>
 </html>
