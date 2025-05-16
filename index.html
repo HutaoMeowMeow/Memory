@@ -738,6 +738,55 @@
     </footer>
 
     <script>
+
+       function checkLoginStatus() {
+    const localSession = localStorage.getItem('currentUser');
+    const sessionSession = sessionStorage.getItem('currentUser');
+    
+    if (!localSession && !sessionSession) {
+        // User is not logged in, redirect to login page
+        window.location.href = 'login.html';
+    }
+}
+
+// Get current user data
+function getCurrentUser() {
+    const localSession = localStorage.getItem('currentUser');
+    const sessionSession = sessionStorage.getItem('currentUser');
+    
+    if (localSession) {
+        return JSON.parse(localSession);
+    } else if (sessionSession) {
+        return JSON.parse(sessionSession);
+    }
+    
+    return null;
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+}
+
+// Check login status when page loads
+checkLoginStatus();
+
+// Update UI with user information (optional)
+document.addEventListener('DOMContentLoaded', function() {
+    const user = getCurrentUser();
+    if (user) {
+        // You can display the username somewhere if needed
+        console.log('Logged in as:', user.username || user.email);
+    }
+    
+    // Add logout functionality to any logout button you add
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', logout);
+    }
+}); 
     // Modal functions
     function openStoryModal(storyId) {
         document.getElementById('story-modal').style.display = 'block';
@@ -832,6 +881,8 @@
             });
         });
     });
+
+    
 </script>
 </body>
 </html>
