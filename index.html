@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StoryPad - Read Stories</title>
+    <title>TaleNest - Read Stories</title>
+    <link rel="icon" type="image/png" href="Logo.jpeg">
     <style>
 
         .story-genre {
@@ -15,6 +16,7 @@
         font-size: 14px;
         margin-top: 5px;
     }
+    
         * {
             margin: 0;
             padding: 0;
@@ -366,6 +368,35 @@
         }
 
         /* Reading Area */
+
+        .reading-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #121212;
+            z-index: 2100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .reading-spinner {
+            width: 70px;
+            height: 70px;
+            border: 4px solid rgba(255,107,107,0.1);
+            border-top-color: #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .reading-loading p {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ddd;
+        }
         .reading-area {
             display: none;
             position: fixed;
@@ -528,11 +559,16 @@
     </style>
 </head>
 <body>
+
+    <div class="reading-loading" id="reading-loading" style="display: none;">
+            <div class="reading-spinner"></div>
+                <p>Loading story...</p>
+        </div>
     <div class="background-overlay"></div>
     
     <header>
         <nav class="container">
-            <a href="#" class="logo">StoryPad</a>
+            <a href="#" class="logo">TaleNest</a>
             <div class="nav-links">
                 <a href="#">Browse</a>
                 <a href="#">Community</a>
@@ -686,7 +722,10 @@
             
         </div>
     </div>
-
+    <div class="reading-loading" id="reading-loading" style="display: none;">
+    <div class="reading-spinner"></div>
+    <p>Loading your story...</p>
+</div>
     <footer>
         <div class="footer-links">
             <a href="#">About</a>
@@ -698,7 +737,6 @@
         <p style="color: #666;">© 2025 StoryPad. All rights reserved.</p>
     </footer>
 
-    
     <script>
     // Modal functions
     function openStoryModal(storyId) {
@@ -710,10 +748,24 @@
     }
 
     function readStory() {
-        closeModal();
+    closeModal();
+    
+    // Show loading screen first - ensure it's visible before anything else happens
+    const loadingScreen = document.getElementById('reading-loading');
+    loadingScreen.style.display = 'flex';
+    loadingScreen.style.visibility = 'visible';
+    loadingScreen.style.opacity = '1';
+    
+    // Simulate loading time (you can adjust this time as needed)
+    setTimeout(function() {
+        // Hide loading screen
+        loadingScreen.style.display = 'none';
+        
+        // Show reading area
         document.getElementById('reading-area').style.display = 'block';
         document.body.style.overflow = 'hidden';
-    }
+    }, 2000); // 2 seconds of loading time for better visibility
+}
 
     function closeReading() {
         document.getElementById('reading-area').style.display = 'none';
