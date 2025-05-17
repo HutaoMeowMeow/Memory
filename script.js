@@ -107,25 +107,3 @@ const quill = new Quill('#editor', {
     autoSave();
   });
   
-  loadDraft();
-  updateStats();
-  window.addEventListener('DOMContentLoaded', () => {
-    const storyLibrary = document.getElementById('storyLibrary');
-    const stories = JSON.parse(localStorage.getItem('publishedStories')) || [];
-  
-    stories.forEach(story => {
-      const storyDiv = document.createElement('div');
-      storyDiv.className = 'story-card';
-  
-      storyDiv.innerHTML = `
-        <h2>${story.title}</h2>
-        <p><strong>Genre:</strong> ${story.genre}</p>
-        <p><strong>By:</strong> ${story.author}</p>
-        <div>${story.content}</div>
-      `;
-  
-      storyLibrary.appendChild(storyDiv);
-    });
-  });
-
-  
