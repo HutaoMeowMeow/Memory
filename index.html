@@ -910,36 +910,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       }
     });
-    </script>
-    
-    <div class="story-library" id="storyLibrary">
-
-      </div>
-
-      <button onclick="addTestStory()">Add Test Story</button>
-
-<script>
-  function addTestStory() {
-    const storyLibrary = document.getElementById('storyLibrary');
-    const storyDiv = document.createElement('div');
-    storyDiv.className = 'story-card';
-    storyDiv.innerHTML = `
-      <h2>Sample Story</h2>
-      <p><strong>Genre:</strong> Sci-Fi</p>
-      <p><strong>By:</strong> You</p>
-      <div>This is a test story inserted by a button click.</div>
-    `;
-    storyLibrary.appendChild(storyDiv);
-  }
-</script>
-<!-- Add this to your HTML where you want the library to appear -->
-<div class="story-library" id="storyLibrary">
-    <h2>Your Library</h2>
-    <div class="story-card">
-        <h3>Sample Story</h3>
-        <p><strong>Genre:</strong> Sci-Fi</p>
-        <p><strong>By:</strong> You</p>
-        <div>This is a test story inserted by a button click.</div>
-    </div>
-</div>
-      
