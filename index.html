@@ -889,24 +889,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const library = document.querySelector('.story-library'); // Ensure this exists in your HTML
-      const stories = JSON.parse(localStorage.getItem('publishedStories') || '[]');
-    
-      if (library && stories.length > 0) {
-        library.innerHTML = ''; // Clear any placeholder
-    
-        stories.forEach(story => {
-          const card = document.createElement('div');
-          card.classList.add('story-card');
-          card.innerHTML = `
-            <h3>${story.title}</h3>
-            <p>${story.content.substring(0, 100)}...</p>
-            <small>Published on ${story.date}</small>
-          `;
-          library.appendChild(card);
-        });
-      }
-    });
