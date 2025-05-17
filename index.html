@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TaleNest - Read Stories</title>
     <link rel="icon" type="image/png" href="Logo.jpeg">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+
     <style>
 
         .story-genre {
@@ -573,7 +576,7 @@
                 <a href="#">Browse</a>
                 <a href="#">Community</a>
                 <a href="#">My Library</a>
-                <a href="#" class="write-btn">Write</a>
+                <a href="write.html" class="write-btn">Write</a>
             </div>
         </nav>
     </header>
@@ -887,3 +890,56 @@ document.addEventListener('DOMContentLoaded', function() {
 </body>
 </html>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const library = document.querySelector('.story-library'); // Ensure this exists in your HTML
+      const stories = JSON.parse(localStorage.getItem('publishedStories') || '[]');
+    
+      if (library && stories.length > 0) {
+        library.innerHTML = ''; // Clear any placeholder
+    
+        stories.forEach(story => {
+          const card = document.createElement('div');
+          card.classList.add('story-card');
+          card.innerHTML = `
+            <h3>${story.title}</h3>
+            <p>${story.content.substring(0, 100)}...</p>
+            <small>Published on ${story.date}</small>
+          `;
+          library.appendChild(card);
+        });
+      }
+    });
+    </script>
+    
+    <div class="story-library" id="storyLibrary">
+
+      </div>
+
+      <button onclick="addTestStory()">Add Test Story</button>
+
+<script>
+  function addTestStory() {
+    const storyLibrary = document.getElementById('storyLibrary');
+    const storyDiv = document.createElement('div');
+    storyDiv.className = 'story-card';
+    storyDiv.innerHTML = `
+      <h2>Sample Story</h2>
+      <p><strong>Genre:</strong> Sci-Fi</p>
+      <p><strong>By:</strong> You</p>
+      <div>This is a test story inserted by a button click.</div>
+    `;
+    storyLibrary.appendChild(storyDiv);
+  }
+</script>
+<!-- Add this to your HTML where you want the library to appear -->
+<div class="story-library" id="storyLibrary">
+    <h2>Your Library</h2>
+    <div class="story-card">
+        <h3>Sample Story</h3>
+        <p><strong>Genre:</strong> Sci-Fi</p>
+        <p><strong>By:</strong> You</p>
+        <div>This is a test story inserted by a button click.</div>
+    </div>
+</div>
+      
