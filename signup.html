@@ -186,10 +186,19 @@
         return;
       }
 
+      if (accounts.find(acc => acc.username.toLowerCase() === username.toLowerCase())) {
+        message.textContent = 'Username already taken.';
+        return;
+      }
+
       const newAccount = {
         email,
         username,
-        password: hashPassword(password)
+        password: hashPassword(password),
+        bio: 'Writer and avid reader. I love creating worlds where readers can escape reality for a while.',
+        stories: [],
+        followers: [],
+        following: []
       };
 
       accounts.push(newAccount);
