@@ -571,14 +571,21 @@
     
     <header>
         <nav class="container">
-            <a href="#" class="logo">TaleNest</a>
-            <div class="nav-links">
-                <a href="#">Browse</a>
-                <a href="#">Community</a>
-                <a href="#">My Library</a>
-                <a href="write.html" class="write-btn">Write</a>
-            </div>
-        </nav>
+    <a href="#" class="logo">TaleNest</a>
+    
+    <div class="nav-links">
+        <a href="#">Browse</a>
+        <a href="#">Community</a>
+        <a href="#">My Library</a>
+        <a href="write.html" class="write-btn">Write</a>
+    </div>
+
+    <div class="user-menu" style="display: flex; align-items: center; gap: 20px;">
+        <a href="profile.html" style="color: #fff; text-decoration: none;">Profile</a>
+        <a href="#" onclick="logout()" style="color: #ff6b6b; text-decoration: none;">Logout</a>
+    </div>
+</nav>
+
     </header>
 
     <main class="container">
@@ -631,7 +638,7 @@
         </div>
 
             <div class="modal-description" id="modal-description">
-                It tells the story of two individuals who began as complete strangers, unaware of the impact they would have on each other's lives. Through shared moments, laughter, and silent understanding, they built a bond that felt timeless—only to be separated by the inevitability of life’s changes. Now, all that remains are fragments of memories: a smile, a conversation, a feeling that lingers in the heart. This is a story about the kind of connection that doesn't last forever, but stays with you forever.
+                <p style="text-align: justify;">It tells the story of two individuals who began as complete strangers, unaware of the impact they would have on each other's lives. Through shared moments, laughter, and silent understanding, they built a bond that felt timeless—only to be separated by the inevitability of life’s changes. Now, all that remains are fragments of memories: a smile, a conversation, a feeling that lingers in the heart. This is a story about the kind of connection that doesn't last forever, but stays with you forever.</p>
             </div>
             <div class="modal-actions">
                 <button class="modal-btn primary" onclick="readStory()">Read Now</button>
@@ -885,7 +892,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    
+     function logout() {
+        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+    }
+
+    function checkLoginStatus() {
+        const localSession = localStorage.getItem('currentUser');
+        const sessionSession = sessionStorage.getItem('currentUser');
+        
+        if (!localSession && !sessionSession) {
+            // User is not logged in, redirect to login page
+            window.location.href = 'login.html';
+        }
+    }
 </script>
 </body>
 </html>
