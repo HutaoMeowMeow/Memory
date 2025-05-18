@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaleNest - My Profile</title>
+    <link rel="icon" type="image/png" href="Logo.jpeg">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Improved Foggy Background Effect */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(45, 45, 45, 0.2) 0%, rgba(10, 10, 10, 0.8) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Main Content */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff6b6b;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b6b;
+        }
+
+        .write-btn {
+            background: #ff6b6b;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .write-btn:hover {
+            background: #e55555;
+        }
+
+        /* User Profile */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            position: relative;
+            padding: 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ffcc00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-name {
+            font-weight: bold;
+            color: #fff;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+
+        .profile-status {
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.2;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background: #18191c;
+            border-radius: 4px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            min-width: 220px;
+            display: none;
+            z-index: 1000;
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+        }
+
+        .profile-dropdown.active {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-item {
+            padding: 8px 12px;
+            color: #b9bbbe;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s, color 0.2s;
+            font-size: 14px;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+        }
+
+        .dropdown-item.danger {
+            color: #f04747;
+        }
+
+        .dropdown-item.danger:hover {
+            background: rgba(240, 71, 71, 0.1);
+        }
+
+        /* Profile Page Styles */
+        .profile-header-section {
+            margin-top: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ffcc00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 60px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 4px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-details {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .profile-name-large {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .profile-username {
+            color: #aaa;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .profile-bio {
+            color: #ddd;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .profile-btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-btn.primary {
+            background: #ff6b6b;
+            color: #fff;
+        }
+
+        .profile-btn.primary:hover {
+            background: #e55555;
+        }
+
+        .profile-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .profile-btn.secondary:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* Tabs */
+        .profile-tabs {
+            margin-top: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 10px;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #aaa;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab.active {
+            color: #ff6b6b;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #ff6b6b;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab:hover {
+            color: #fff;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            padding: 40px 0;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Stories Grid */
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .story-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255,107,107,0.3);
+        }
+
+        .story-cover {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .story-info {
+            padding: 15px;
+        }
+
+        .story-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .story-meta {
+            color: #aaa;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px 0;
+            color: #aaa;
+        }
+
+        .empty-state-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: rgba(255,255,255,0.1);
+        }
+
+        .empty-state-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        /* Followers & Following */
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .user-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .user-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.2);
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ffcc00);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 30px;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .user-username {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .follow-btn {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .follow-btn:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .follow-btn.following {
+            background: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        .follow-btn.following:hover {
+            background: #e55555;
+        }
+
+        /* Edit Profile Modal */
+        .edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .edit-modal.active {
+            display: flex;
+        }
+
+        .edit-modal-content {
+            background: #1a1a1a;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease-out;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .edit-modal-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .edit-modal-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .close-edit-modal {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 22px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-edit-modal:hover {
+            color: #fff;
+        }
+
+        .edit-modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ddd;
+            font-size: 16px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: #ff6b6b;
+            outline: none;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .photo-upload {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .current-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ffcc00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 40px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .current-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-upload-btn {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .photo-upload-btn:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .edit-modal-footer {
+            padding: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal-btn {
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .modal-btn.cancel {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .modal-btn.cancel:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .modal-btn.save {
+            background: #ff6b6b;
+            color: #fff;
+        }
+
+        .modal-btn.save:hover {
+            background: #e55555;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0,0,0,0.9);
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #ff6b6b;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-header-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-photo {
+                margin: 0 auto;
+            }
+            
+            .profile-stats {
+                justify-content: center;
+            }
+            
+            .profile-actions {
+                justify-content: center;
+            }
+            
+            .profile-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 5px;
+            }
+            
+            .tab {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .nav-links a:not(.write-btn) {
+                display: none;
+            }
+            
+            .profile-info {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-overlay"></div>
+    
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">TaleNest</a>
+            
+            <div class="nav-links">
+                <a href="#">Browse</a>
+                <a href="#">Community</a>
+                <a href="#">My Library</a>
+                <a href="write.html" class="write-btn">Write</a>
+            </div>
+            <div class="user-profile" id="user-profile">
+                <div class="profile-avatar" id="profile-avatar">U</div>
+                <div class="profile-info">
+                    <div class="profile-name" id="profile-name">User</div>
+                </div>
+                
+                <div class="profile-dropdown" id="profile-dropdown">
+                    <a href="#" class="dropdown-item" onclick="Home()">
+                        <span>Home</span>
+                    </a>
+                    <a href="profile.html" class="dropdown-item">
+                        <span>My Profile</span>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="dropdown-item danger" onclick="logout()">
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="profile-header-section">
+            <div class="profile-photo" id="profile-photo">
+                U
+                <!-- If user has profile photo: -->
+                <!-- <img src="profile-photo.jpg" alt="Profile Photo"> -->
+            </div>
+            
+            <div class="profile-details">
+                <h1 class="profile-name-large" id="profile-name-large">Username</h1>
+                <p class="profile-username" id="profile-username">@username</p>
+                
+                <div class="profile-bio" id="profile-bio">
+                    Writer and avid reader. I love creating worlds where readers can escape reality for a while. Mostly write fantasy and romance, but occasionally dabble in other genres.
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-value" id="stories-count">15</span>
+                        <span class="stat-label">Stories</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="followers-count">256</span>
+                        <span class="stat-label">Followers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="following-count">124</span>
+                        <span class="stat-label">Following</span>
+                    </div>
+                </div>
+                
+                <div class="profile-actions">
+                    <button class="profile-btn secondary" id="edit-profile-btn" onclick="openEditModal()">
+                        Edit Profile
+                    </button>
+                    <button class="profile-btn secondary">
+                        Share Profile
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <section class="profile-tabs">
+            <div class="tab active" data-tab="stories">Stories</div>
+            <div class="tab" data-tab="followers">Followers</div>
+            <div class="tab" data-tab="following">Following</div>
+        </section>
+        
+        <section class="tab-content">
+            <!-- Stories Tab -->
+            <div class="tab-pane active" id="stories-tab">
+                <div class="stories-grid">
+                    <!-- Story Card -->
+                    <div class="story-card">
+                        <img src="memory.jpeg" alt="Story Cover" class="story-cover">
+                        <div class="story-info">
+                            <h3 class="story-title">Once Strangers, Now a Memory</h3>
+                            <div class="story-meta">
+                                <span>Romance</span>
+                                <span>1.2K reads</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Empty state (shown when no stories) -->
+                    <div class="empty-state" style="display: none;">
+                        <div class="empty-state-icon">📝</div>
+                        <h3 class="empty-state-text">No stories yet</h3>
+                        <a href="write.html" class="profile-btn primary">Start Writing</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Followers Tab -->
+            <div class="tab-pane" id="followers-tab">
+                <div class="users-grid">
+                    <!-- Follower Card -->
+                    <div class="user-card">
+                        <div class="user-avatar">J</div>
+                        <h3 class="user-name">Jane Doe</h3>
+                        <p class="user-username">@janedoe</p>
+                        <button class="follow-btn">Follow</button>
+                    </div>
+                    
+                    <!-- Follower Card -->
+                    <div class="user-card">
+                        <div class="user-avatar">M</div>
+                        <h3 class="user-name">Mark Smith</h3>
+                        <p class="user-username">@marksmith</p>
+                        <button class="follow-btn following">Following</button>
+                    </div>
+                    
+                    <!-- More follower cards... -->
+                    <div class="user-card">
+                        <div class="user-avatar">A</div>
+                        <h3 class="user-name">Alex Johnson</h3>
+                        <p class="user-username">@alexj</p>
+                        <button class="follow-btn">Follow</button>
+                    </div>
+                    
+                    <!-- More follower cards -->
+                    <div class="user-card">
+                        <div class="user-avatar">L</div>
+                        <h3 class="user-name">Lisa Chen</h3>
+                        <p class="user-username">@lisachen</p>
+                        <button class="follow-btn">Follow</button>
+                    </div>
+                    
+                    <div class="user-card">
+                        <div class="user-avatar">R</div>
+                        <h3 class="user-name">Robert Park</h3>
+                        <p class="user-username">@robpark</p>
+                        <button class="follow-btn following">Following</button>
+                    </div>
+                    
+                    <!-- Empty state (shown when no followers) -->
+                    <div class="empty-state" style="display: none;">
+                        <div class="empty-state-icon">👥</div>
+                        <h3 class="empty-state-text">No followers yet</h3>
+                        <p>Share your profile to get more followers</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Following Tab -->
+            <div class="tab-pane" id="following-tab">
+                <div class="users-grid">
+                    <!-- Following Card -->
+                    <div class="user-card">
+                        <div class="user-avatar">R</div>
+                        <h3 class="user-name">Ryan Lee</h3>
+                        <p class="user-username">@ryanlee</p>
+                        <button class="follow-btn following">Following</button>
+                    </div>
+                    
+                    <!-- Following Card -->
+                    <div class="user-card">
+                        <div class="user-avatar">S</div>
+                        <h3 class="user-name">Sarah Kim</h3>
+                        <p class="user-username">@sarahkim</p>
+                        <button class="follow-btn following">Following</button>
+                    </div>
+                    
+                    <!-- More following cards... -->
+                    <div class="user-card">
+                        <div class="user-avatar">K</div>
+                        <h3 class="user-name">Kevin Wang</h3>
+                        <p class="user-username">@kevinw</p>
+                        <button class="follow-btn following">Following</button>
+                    </div>
+                    
+                    <!-- Empty state (shown when not following anyone) -->
+                    <div class="empty-state" style="display: none;">
+                        <div class="empty-state-icon">🔍</div>
+                        <h3 class="empty-state-text">You're not following anyone yet</h3>
+                        <button class="profile-btn primary">Discover Writers</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Edit Profile Modal -->
+    <div class="edit-modal" id="edit-modal">
+        <div class="edit-modal-content">
+            <div class="edit-modal-header">
+                <h2 class="edit-modal-title">Edit Profile</h2>
+                <button class="close-edit-modal" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="edit-modal-body">
+                <div class="photo-upload">
+                    <div class="current-photo" id="modal-profile-photo">
+                        U
+                        <!-- If user has profile photo: -->
+                        <!-- <img src="profile-photo.jpg" alt="Profile Photo"> -->
+                    </div>
+                    <div>
+                        <button class="photo-upload-btn">Change Photo</button>
+                        <input type="file" id="photo-upload-input" style="display: none;" accept="image/*">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="display-name" class="form-label">Display Name</label>
+                    <input type="text" id="display-name" class="form-input" value="Username" placeholder="Enter your display name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-input" value="username" placeholder="Enter your username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="bio" class="form-label">Bio</label>
+                    <textarea id="bio" class="form-input form-textarea" placeholder="Tell us about yourself">Writer and avid reader. I love creating worlds where readers can escape reality for a while. Mostly write fantasy and romance, but occasionally dabble in other genres.</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-input" value="user@example.com" placeholder="Enter your email">
+                </div>
+            </div>
+            <div class="edit-modal-footer">
+                <button class="modal-btn cancel" onclick="closeEditModal()">Cancel</button>
+                <button class="modal-btn save" onclick="saveProfile()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Help & Support</a>
+                <a href="#">Contact</a>
+            </div>
+            <p>&copy; 2025 TaleNest. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+
+        function Home() {
+            window.location.href = 'index.html';
+        }
+        // Toggle profile dropdown
+        const userProfile = document.getElementById('user-profile');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        
+        userProfile.addEventListener('click', function(e) {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (!profileDropdown.contains(e.target)) {
+                profileDropdown.classList.remove('active');
+            }
+        });
+        
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Get tab content id
+                const tabContentId = this.getAttribute('data-tab') + '-tab';
+                
+                // Hide all tab panes
+                tabPanes.forEach(pane => pane.classList.remove('active'));
+                
+                // Show selected tab pane
+                document.getElementById(tabContentId).classList.add('active');
+            });
+        });
+        
+        // Edit profile modal
+        function openEditModal() {
+            document.getElementById('edit-modal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+        
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+            document.body.style.overflow = 'auto'; // Enable scrolling
+        }
+        
+        // Follow/Unfollow buttons
+        const followButtons = document.querySelectorAll('.follow-btn');
+        
+        followButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('following');
+                if (this.classList.contains('following')) {
+                    this.textContent = 'Following';
+                } else {
+                    this.textContent = 'Follow';
+                }
+            });
+        });
+        
+        // Profile photo upload functionality
+        const photoUploadBtn = document.querySelector('.photo-upload-btn');
+        const photoUploadInput = document.getElementById('photo-upload-input');
+        
+        photoUploadBtn.addEventListener('click', function() {
+            photoUploadInput.click();
+        });
+        
+        photoUploadInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // Update profile photo in modal
+                    let modalPhoto = document.getElementById('modal-profile-photo');
+                    modalPhoto.innerHTML = `<img src="${e.target.result}" alt="Profile Photo">`;
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+        
+        // Save profile changes
+        // Save profile changes
+        function saveProfile() {
+            // Get updated values
+            const displayName = document.getElementById('display-name').value;
+            const username = document.getElementById('username').value;
+            const bio = document.getElementById('bio').value;
+            const email = document.getElementById('email').value;
+            
+            // Update profile elements on page
+            document.getElementById('profile-name-large').textContent = displayName;
+            document.getElementById('profile-username').textContent = '@' + username;
+            document.getElementById('profile-bio').textContent = bio;
+            document.getElementById('profile-name').textContent = displayName;
+            
+            // Update user data in localStorage
+            const currentUser = getCurrentUser();
+            if (currentUser) {
+                const accounts = getUserAccounts();
+                const updatedAccounts = accounts.map(acc => {
+                    if (acc.email === currentUser.email) {
+                        return {
+                            ...acc,
+                            username: displayName,
+                            bio: bio
+                        };
+                    }
+                    return acc;
+                });
+                
+                saveUserAccounts(updatedAccounts);
+            }
+            
+            // If profile photo was changed, update it on the main page
+            const modalPhoto = document.getElementById('modal-profile-photo');
+            if (modalPhoto.querySelector('img')) {
+                const photoSrc = modalPhoto.querySelector('img').src;
+                const mainPhoto = document.getElementById('profile-photo');
+                mainPhoto.innerHTML = `<img src="${photoSrc}" alt="Profile Photo">`;
+                
+                // Also update the nav avatar
+                const profileAvatar = document.getElementById('profile-avatar');
+                profileAvatar.innerHTML = `<img src="${photoSrc}" alt="Profile Photo">`;
+            }
+            
+            // Close modal
+            closeEditModal();
+            
+            // Show success message (optional)
+            alert('Profile updated successfully!');
+        }
+        
+        // Helper function to save user accounts
+        function saveUserAccounts(accounts) {
+            localStorage.setItem('taleNestAccounts', JSON.stringify(accounts));
+        }
+        
+        // Helper function to save user accounts
+        function saveUserAccounts(accounts) {
+            localStorage.setItem('taleNestAccounts', JSON.stringify(accounts));
+        }
+        
+        // Logout functionality
+        function logout() {
+            // In a real app, handle logout logic here
+            alert('Logging out...');
+            // Redirect to login page
+            // window.location.href = 'login.html';
+        }
+        
+        // Load user data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // In a real app, you would fetch user data from API/database
+            // For demo purposes, we'll just use placeholder data
+            const accounts = getUserAccounts();
+            
+            // Check if user is logged in
+            const currentUser = getCurrentUser();
+            const isLoggedIn = currentUser !== null;
+            // Check if user is logged in
+            
+            
+            if (!isLoggedIn) {
+                // Redirect to login page if not logged in
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Get saved username from localStorage if available
+            const savedName = localStorage.getItem('userName');
+            if (savedName) {
+                document.getElementById('profile-name').textContent = currentUser.username;
+            document.getElementById('profile-name-large').textContent = currentUser.username;
+            document.getElementById('profile-username').textContent = '@' + currentUser.username.toLowerCase().replace(/\s+/g, '');
+            document.getElementById('display-name').value = currentUser.username;
+            document.getElementById('username').value = currentUser.username.toLowerCase().replace(/\s+/g, '');
+            document.getElementById('email').value = currentUser.email || '';
+                
+                // Set first letter as avatar if no profile pic
+                const firstLetter = savedName.charAt(0).toUpperCase();
+                document.getElementById('profile-avatar').textContent = firstLetter;
+                document.getElementById('profile-photo').textContent = firstLetter;
+                document.getElementById('modal-profile-photo').textContent = firstLetter;
+            }
+        });
+
+        
+    </script>
+</body>
+</html>
+                    
