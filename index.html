@@ -10,6 +10,448 @@
 
     <style>
 
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .profile-modal-content {
+            background: #1a1a1a;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            animation: modalFadeIn 0.3s ease-out;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .profile-header {
+            position: relative;
+            height: 150px;
+            background: linear-gradient(135deg, #ff6b6b, #ffcc00);
+            overflow: hidden;
+        }
+        
+        .close-profile-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-profile-modal:hover {
+            background: rgba(0,0,0,0.5);
+            transform: scale(1.1);
+        }
+        
+        .profile-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ffcc00);
+            border: 4px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 36px;
+            position: absolute;
+            bottom: -50px;
+            left: 30px;
+            overflow: hidden;
+        }
+        
+        .profile-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-body {
+            padding: 60px 30px 30px;
+        }
+        
+        .profile-name-large {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .profile-username {
+            color: #aaa;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .profile-details {
+            margin-bottom: 25px;
+        }
+        
+        .detail-item {
+            display: flex;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+        
+        .detail-label {
+            width: 100px;
+            color: #aaa;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .detail-value {
+            color: #fff;
+        }
+        
+        .profile-bio {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            color: #ddd;
+            line-height: 1.5;
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .profile-action-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .profile-action-btn.primary {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .profile-action-btn.primary:hover {
+            background: #e55555;
+        }
+        
+        .profile-action-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .profile-action-btn.secondary:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .reading-progress {
+            margin-top: 25px;
+        }
+        
+        .progress-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .progress-label {
+            color: #aaa;
+            font-size: 14px;
+            font-weight: normal;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #ff6b6b, #ffcc00);
+            border-radius: 3px;
+            width: 65%;
+        }
+        
+        .book-list {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #ff6b6b #2a2a2a;
+        }
+        
+        .book-list::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .book-list::-webkit-scrollbar-track {
+            background: #2a2a2a;
+            border-radius: 10px;
+        }
+        
+        .book-list::-webkit-scrollbar-thumb {
+            background-color: #ff6b6b;
+            border-radius: 10px;
+        }
+        
+        .book-item {
+            flex: 0 0 70px;
+            height: 100px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .book-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Animation for modal */
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .profile-modal-content {
+            animation: slideIn 0.3s ease-out;
+        }
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    position: relative;
+    padding: 6px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.user-profile:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b6b, #ffcc00);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-name {
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.profile-status {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1.2;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background: #18191c;
+    border-radius: 4px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    min-width: 220px;
+    display: none;
+    z-index: 1000;
+    border: 1px solid rgba(255,255,255,0.05);
+    overflow: hidden;
+}
+
+.profile-dropdown.active {
+    display: block;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.profile-dropdown-header {
+    padding: 16px;
+    background-color: #2b2d31;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+}
+
+.profile-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #b9bbbe;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.profile-close:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+.dropdown-section {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.dropdown-section:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item {
+    padding: 8px 12px;
+    color: #b9bbbe;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, color 0.2s;
+    font-size: 14px;
+}
+
+.dropdown-item:hover {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+}
+
+.dropdown-item.danger {
+    color: #f04747;
+}
+
+.dropdown-item.danger:hover {
+    background: rgba(240, 71, 71, 0.1);
+}
+
+.dropdown-item i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.profile-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3ba55c; /* online - green */
+    margin-right: 5px;
+}
+
+.status-idle .profile-status-dot {
+    background: #faa61a; /* idle - yellow */
+}
+
+.status-dnd .profile-status-dot {
+    background: #ed4245; /* do not disturb - red */
+}
+
+.status-offline .profile-status-dot {
+    background: #747f8d; /* offline - gray */
+}
+
+.dropdown-item span.right {
+    margin-left: auto;
+    color: #8e9297;
+    font-size: 12px;
+}
+
+
+        
+        @media (max-width: 768px) {
+            .profile-info {
+                display: none;
+            }
+        }
+
         .story-genre {
         display: inline-block;
         background: rgba(255,107,107,0.2);
@@ -579,10 +1021,25 @@
         <a href="#">My Library</a>
         <a href="write.html" class="write-btn">Write</a>
     </div>
+    <div class="user-profile" id="user-profile">
+                <div class="profile-avatar" id="profile-avatar">U</div>
+                <div class="profile-info">
+                    <div class="profile-name" id="profile-name">User</div>
+                </div>
+                
+                <div class="profile-dropdown" id="profile-dropdown">
+                    
 
-    <div class="user-menu" style="display: flex; align-items: center; gap: 20px;">
-        <a href="profile.html" style="color: #fff; text-decoration: none;">Profile</a>
-        <a href="#" onclick="logout()" style="color: #ff6b6b; text-decoration: none;">Logout</a>
+                    <a href="#" class="dropdown-item" onclick="myProfile()">
+                        <span>My Profile</span>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <span>Settings</span>
+                    </a>
+                     <a href="#" class="dropdown-item danger" onclick="logout()">
+                        <span>Logout</span>
+                     </a>
+        
     </div>
 </nav>
 
@@ -732,9 +1189,6 @@
             
         </div>
     </div>
-    <div class="reading-loading" id="reading-loading" style="display: none;">
-    <div class="reading-spinner"></div>
-    <p>Loading your story...</p>
 </div>
     <footer>
         <div class="footer-links">
@@ -759,6 +1213,10 @@
     }
 }
 
+function myProfile() {
+    window.location.href = 'profile.html';
+}
+
 // Get current user data
 function getCurrentUser() {
     const localSession = localStorage.getItem('currentUser');
@@ -771,13 +1229,6 @@ function getCurrentUser() {
     }
     
     return null;
-}
-
-// Logout function
-function logout() {
-    localStorage.removeItem('currentUser');
-    sessionStorage.removeItem('currentUser');
-    window.location.href = 'login.html';
 }
 
 // Check login status when page loads
@@ -898,15 +1349,68 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'login.html';
     }
 
-    function checkLoginStatus() {
-        const localSession = localStorage.getItem('currentUser');
-        const sessionSession = sessionStorage.getItem('currentUser');
+    document.addEventListener('DOMContentLoaded', function() {
+            const profileEl = document.getElementById('user-profile');
+            const dropdownEl = document.getElementById('profile-dropdown');
+            
+            if (profileEl) {
+                profileEl.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdownEl.classList.toggle('active');
+                });
+            }
+            
+            // Close dropdown when clicking elsewhere
+            document.addEventListener('click', function() {
+                if (dropdownEl.classList.contains('active')) {
+                    dropdownEl.classList.remove('active');
+                }
+            });
+            
+            // Update profile with user info
+            updateProfileDisplay();
+        });
         
-        if (!localSession && !sessionSession) {
-            // User is not logged in, redirect to login page
-            window.location.href = 'login.html';
+        // Update profile display with user information
+        function updateProfileDisplay() {
+            const user = getCurrentUser();
+            if (user) {
+                const profileNameEl = document.getElementById('profile-name');
+                const profileAvatarEl = document.getElementById('profile-avatar');
+                
+                // Update name
+                if (profileNameEl && user.username) {
+                    profileNameEl.textContent = user.username;
+                } else if (profileNameEl && user.email) {
+                    // If no username, use the part before @ in email
+                    profileNameEl.textContent = user.email.split('@')[0];
+                }
+                
+                // Update avatar with first letter
+                if (profileAvatarEl) {
+                    const firstLetter = user.username ? 
+                        user.username.charAt(0).toUpperCase() : 
+                        (user.email ? user.email.charAt(0).toUpperCase() : 'U');
+                    profileAvatarEl.textContent = firstLetter;
+                }
+            }
         }
-    }
+        
+        // Your existing authentication functions
+        function checkLoginStatus() {
+            const localSession = localStorage.getItem('currentUser');
+            const sessionSession = sessionStorage.getItem('currentUser');
+            
+            if (!localSession && !sessionSession) {
+                // User is not logged in, redirect to login page
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Check login status when page loads
+        checkLoginStatus();
+
+        
 </script>
 </body>
 </html>
